@@ -24,7 +24,7 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
-  const [voteList, giveVote] = useState(Array(6).fill(0))
+  const [voteList, giveVote] = useState(Array(anecdotes.length).fill(0))
 
   const randomNumb = () => {
     setSelected( () => Math.floor(Math.random() * anecdotes.length))
