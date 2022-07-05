@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Persons from "./components/Person"
 import Filter from "./components/Filter"
+import Personform from "./components/PersonForm"
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -15,18 +16,9 @@ const App = () => {
       { name: 'Dan Abramov', number: '12-43-234345' },
       { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
+  const [newFilter, setNewFilter] = useState('');
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [newFilter, setNewFilter] = useState('')
-
-
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  };
-
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  };
 
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
@@ -34,51 +26,49 @@ const App = () => {
     person.name.toLowerCase().search(newFilter.toLowerCase()) !== -1));
   };
 
+  const handleNameChange = (event) =>{
+    setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) =>{
+    setNewNumber(event.target.value)
+  }
 
-  const addInfo = (event) => {
+  const addContact = (event) => {
     event.preventDefault()
+    
     const phoneBookObject = {
       name: newName,
       number: newNumber,
       id: persons.length + 1,
     }
-    console.log(newName)
-    if(persons.filter(person => person.name === newName).length >0)
+    
+    if(persons.filter(person => person.name === newName).length > 0)
     {
       alert( newName + " is already added to phonebook")
     }else{
     setPersons(persons.concat(phoneBookObject))
     setPersonsToShow(persons.concat(phoneBookObject))
-    setNewName("")
-    setNewNumber("")
+    setNewName('')
+    setNewNumber('')
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form> 
-        <div>
+      <div>
           <Filter value={newFilter} onChange={handleFilterChange}></Filter>
-        </div>
-      <h3>add a new</h3>
-      </form>
-      <form onSubmit={addInfo}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <Persons shownPersons={shownPersons}/>
+      </div>
+      <h3>Add a new</h3>
+      <div>
+          <Personform addContact={addContact} name={newName} number={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}></Personform>
+      </div>
+      <h3>Numbers</h3>
+      <div>
+          <Persons shownPersons={shownPersons}></Persons>
+      </div>
     </div>
   )
-
 }
 
 export default App
