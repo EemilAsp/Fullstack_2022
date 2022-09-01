@@ -1,30 +1,23 @@
 import { useState, useEffect } from 'react'
-
+import axios from 'axios'
 
 import Persons from "./components/Person"
 import Filter from "./components/Filter"
 import Personform from "./components/PersonForm"
 
 const App = () => {
- 
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
-  
 
-  const [shownPersons, setPersonsToShow] = useState([
-      { name: 'Arto Hellas', number: '040-123456' },
-      { name: 'Ada Lovelace', number: '39-44-5323523' },
-      { name: 'Dan Abramov', number: '12-43-234345' },
-      { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [persons, setPersons] = useState([])
+  const [shownPersons, setPersonsToShow] = useState([])
 
-  useEffect(() =>
+  useEffect(() => { //Effect hook to get phonebook data from database
     console.log('effect')
-  )
+    axios.get('http://localhost:3001/persons').then(response=> {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+        setPersonsToShow(response.data)
+    })
+  }, [])
 
   const [newFilter, setNewFilter] = useState('');
   const [newName, setNewName] = useState('')
