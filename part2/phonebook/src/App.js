@@ -79,7 +79,7 @@ const App = () => {
                       number={newNumber}
                       handleNameChange={handleNameChange}
                       handleNumberChange={handleNumberChange}>
-                      </Personform>
+          </Personform>
       </div>
       <h3>Contacts</h3>
       <div>
