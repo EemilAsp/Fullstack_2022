@@ -13,26 +13,22 @@ const App = () => {
     console.log('effect')
     axios.get('https://restcountries.com/v3.1/all').then(response => {
       console.log('All countries hooked')
-      setCountries(response.data) //all data from api which requires mapping
+      setCountries(response.data) //all data from api that requires mapping
     })
   }, []);
 
-  
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
-    if(newFilter.length > 0){//filtering the objects where name.common does not equal to filter
-      const filteredArray = countries.filter((country) =>
-      country.name.common.toLowerCase().includes(newFilter.toLowerCase()));
-      setCountriesToShow(filteredArray)
-      console.log(filteredArray.map(language =>
-        language.languages))
-    };
+    //filtering the objects where name.common does not equal to filter
+    const filteredArray = countries.filter((country) =>
+    country.name.common.toLowerCase().includes(newFilter.toLowerCase()));
+    setCountriesToShow(filteredArray)
   };
-
+  
   return(
     <div>
       <Filter value={newFilter} onChange={handleFilterChange}/>
-      <Countries countries={shownCountries}/>
+      <Countries countries={shownCountries} setCountriesToShow={setCountriesToShow}/>
     </div>
   )
 }

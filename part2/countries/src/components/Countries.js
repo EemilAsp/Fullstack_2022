@@ -1,19 +1,25 @@
 
-const Countries = ({countries}) => {
+import Weather from './Weather'
+
+const Countries = ({countries, setCountriesToShow}) => {
+    //more than 10 countries
     if(countries.length > 10){return (<div>Too many matches, specify another filter</div>)}
+    //less than 10 but more than 1
     if(countries.length <= 10 && countries.length > 1){
       return (
         <div>
           {countries.map((country, i) => 
             <div key={i}>
               {country.name.common}
-            </div>
+              <button onClick={() =>
+                setCountriesToShow([country])}>
+                  show</button>
+            </div>//If button is pressed the country return country as countries
             )}
         </div>
-
       )
     }
-    if(countries.length === 1){
+    if(countries.length === 1){//if only 1 country -> show more info
     return(
       <div>
         {countries.map((country, i) => 
@@ -27,8 +33,10 @@ const Countries = ({countries}) => {
               <li key={language}>{language}</li>)}
               </ul>
               <img src={country.flags.png} alt={country.name.common} width="150" height="150"/>
+              <Weather country={countries[0]}></Weather>
             </div>
             )}
+            
       </div>
     )}
     }
