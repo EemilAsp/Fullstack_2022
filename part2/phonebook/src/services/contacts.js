@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/api/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
@@ -17,9 +17,10 @@ const update = (id, newObject) => {
   }
 
 const deleteContact = (id) => {
-  return axios.delete(`${baseUrl}/${id}`)
+  const request = axios.delete(`${baseUrl}/${id}`)
+  return request.then(response => response.data)
 }
 
 //compiles with warning - does not make sense ?
 // eslint-disable-next-line
-  export default { getAll, create, update, deleteContact }
+export default { getAll, create, update, deleteContact }

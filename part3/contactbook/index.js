@@ -1,4 +1,6 @@
 const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 const max = 999999;
@@ -29,12 +31,21 @@ let persons = [
     }
   ]
 
-app.use(express.json())
+morgan.token('person', (request) => {
+  if (request.method === "POST"){
+    return JSON.stringify(request.body)
+  }
+})
 
-app.get('/info', (req, res) => {
+app.use(express.json())
+app.use(cors())
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
+
+app.get('/info', (request, response) => {
     const len = persons.length;
     const date = new Date();
-    res.send(
+    response.send(
         `<div>Phonebook has info for ${len} people</div>
         <div>${date}</div>`
     )
@@ -66,11 +77,10 @@ app.post('/api/persons', (request, response) => {
   }
   persons = persons.concat(person)
   response.json(person)
-
 })
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -89,7 +99,14 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
-const PORT = 3001
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
