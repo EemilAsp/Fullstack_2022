@@ -50,7 +50,7 @@ const App = () => {
       }, 4000)
     }).catch((error =>
       {
-        setAlertmessage("ERROR! " +id.name + " is already deleted!")
+        setAlertmessage("ERROR! " +id.name+ " is already deleted!")
         setPersons(persons.filter(person => person.id !== id.id))
         setPersonsToShow(persons.filter(person => person.id !== id.id))
         setTimeout(() => {
