@@ -1,5 +1,6 @@
 
 .env
+.dockerignore
 
 # dependencies
 /node_modules
