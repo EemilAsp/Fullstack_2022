@@ -1,12 +1,16 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 
 const app = express()
 
 const max = 999999;
 const min = 1;
+
+const password = process.argv[2]
+const url =  `mongodb+srv://fullstack:${password}@cluster0.wfq9vso.mongodb.net/?retryWrites=true&w=majority`
 
 let persons = [
     {
