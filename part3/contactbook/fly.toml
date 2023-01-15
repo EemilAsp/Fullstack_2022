@@ -1,6 +1,6 @@
-# fly.toml file generated for dry-butterfly-3317 on 2023-01-08T12:37:48+02:00
+# fly.toml file generated for shy-dawn-7892 on 2023-01-15T19:34:33+02:00
 
-app = "dry-butterfly-3317"
+app = "shy-dawn-7892"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

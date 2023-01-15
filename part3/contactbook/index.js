@@ -1,41 +1,17 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const mongoose = require('mongoose')
-
-
+const Contact = require('./models/contact')
 const app = express()
+
+app.use(express.json())
+app.use(cors())
+app.use(express.static('build'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
 
 const max = 999999;
 const min = 1;
-
-const password = process.argv[2]
-const url =  `mongodb+srv://fullstack:${password}@cluster0.wfq9vso.mongodb.net/?retryWrites=true&w=majority`
-
-let persons = [
-    {
-      id: 1,
-      name: "Arto Hellas",
-      number: "040-123456"
-      
-    },
-    {
-      id: 2,
-      name: "Ada Lovelace",
-      number: "39-44-5323523" 
-    },
-    {
-      id: 3,
-      name: "Dan Abramov",
-      number: "12-43-234345"
-      
-    },
-    {
-      id: 4,
-      name: "Mary Poppendieck",
-      number: "39-23-6423122" 
-    }
-  ]
 
 morgan.token('person', (request) => {
   if (request.method === "POST"){
@@ -43,13 +19,9 @@ morgan.token('person', (request) => {
   }
 })
 
-app.use(cors())
-
-app.use(express.static('build'))
-app.use(express.json())
-
-
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
+  const generateId = () => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
 app.get('/info', (request, response) => {
     const len = persons.length;
@@ -60,36 +32,31 @@ app.get('/info', (request, response) => {
     )
 })
 
-const generateId = () => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 app.post('/api/persons', (request, response) => {
   const body = request.body
+
   console.log(body.number)
   console.log(body.name)
+
   if (!body.name || !body.number) {
     return response.status(400).json({
       error: 'name or number missing' 
-    })
-  }
-  if(persons.find(person => person.name === body.name))
-  {return response.status(400).json({
-    error: 'name must be unique'
-  })}
+    })}
 
-
-  const person = {
-    id: generateId(),
+  const contact = new Contact({
     name: body.name,
-    number: body.number,
-  }
-  persons = persons.concat(person)
-  response.json(person)
-})
+    number: body.number
+  })
+
+  contact.save().then(savedContact =>{
+    response.json(savedContact)
+  })
+  })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Contact.find({}).then(contacts =>{
+    response.json(contacts)
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -99,13 +66,9 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  Contact.findById(request.params.id).then(contact =>{
+    response.json(contact)
+  })
 })
 
 
@@ -115,7 +78,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
