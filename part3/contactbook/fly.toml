@@ -1,6 +1,6 @@
-# fly.toml file generated for shy-dawn-7892 on 2023-01-15T19:34:33+02:00
+# fly.toml file generated for black-wood-3191 on 2023-01-15T20:00:48+02:00
 
-app = "shy-dawn-7892"
+app = "black-wood-3191"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
