@@ -12,10 +12,26 @@ mongoose.connect(url)
         console.log("Error connecting to MongoDB:", error.message)
     })
 
+
+
 const contactSchema = new mongoose.Schema({
-    name: String,
-    number: String
-})
+    name: {
+        type: String,
+        minlength: 3,
+        required: true
+    },
+    number: {
+        type: String,
+        minlength: [8, "Phone number must be 8 characters long"],
+        validate: {
+        validator: function(val) {
+            return(/^[0-9]{2,3}-[0-9]{6,10}$/.test(val))
+        },
+        message: props => `${props.value} is not a valid phone number! Must be in the format of 2-3 digits followed by 6-10 digits, separated by a dash (e.g 09-1234556 or 040-22334455)`
+    },
+    required: true
+    }
+});
 
 
 contactSchema.set('toJSON', {

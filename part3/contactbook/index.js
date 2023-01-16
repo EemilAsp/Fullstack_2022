@@ -20,26 +20,27 @@ morgan.token("person", (request) => {
   }
 });
 
-
 //Api info page
 app.get("/info", (request, response, next) => {
   Contact.find({})
-  .then(contacts =>
-    {
+    .then((contacts) => {
       response.send(
         `<div>Phonebook has info for ${contacts.length} people</div>
             <div>${new Date()}</div>`
       );
     })
-    .catch(error => next(error))
+    .catch((error) => next(error));
 });
 
 //Search and edit if name is already found
 app.put("/api/persons/:id", (request, response, next) => {
   const name = request.body.name;
   const number = request.body.number;
-  
-  Contact.findByIdAndUpdate(request.params.id, {name, number}, { new: true })
+
+  Contact.findByIdAndUpdate(
+    request.params.id, 
+    { name, number }, 
+    { new: true, runValidators: true, context: 'query'})
     .then((updatedContact) => {
       response.json(updatedContact);
     })
@@ -106,6 +107,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    console.log(error.message)
+    return response.status(400).json({ error: error.message });
   }
   next(error);
 };

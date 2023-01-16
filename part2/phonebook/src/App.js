@@ -81,7 +81,14 @@ const App = () => {
                   setTimeout(() => {
                     setAlertmessage(null)
                   }, 4000)
-                })}
+                })
+                .catch(error =>{console.log(error.response.data)
+                  setAlertmessage("ERROR! " + error.response.data.error)
+                  setTimeout(() => {
+                    setAlertmessage(null)
+                  }, 4000)
+                  })
+              }
     }else{//if not save the contact info to persons array and shownPersons array
     contacts
       .create(phoneBookObject)
@@ -96,7 +103,12 @@ const App = () => {
           setAlertmessage(null)
         }, 4000)
       })
-    
+      .catch(error =>{console.log(error.response.data)
+      setAlertmessage("ERROR! " + error.response.data.error)
+      setTimeout(() => {
+        setAlertmessage(null)
+      }, 4000)
+      })
     }
   }
 
