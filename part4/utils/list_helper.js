@@ -54,10 +54,47 @@ const mostBlogs = (blogs) =>{
   )
 }
 
+const mostLikes = (blogs) =>{ // same logic as the 4.6 but sum the amount of likes not count of objects in the json.
+  likeCount = {}
+
+  blogs.forEach(blog => {
+    const author = blog.author
+    const likes = blog.likes
+
+    if(likeCount[author]) {
+      likeCount[author].likes += likes;
+    }else{
+      likeCount[author] = {
+        likes: likes
+      }
+    }
+  })
+  console.log(likeCount)
+
+  let maxLikes = 0
+  let maxAuthor = ''
+
+  for (const author in likeCount){
+    if(likeCount[author].likes > maxLikes){
+      maxLikes = likeCount[author].likes
+      maxAuthor = author
+    }
+  }
+
+  return(
+    {
+      author: maxAuthor,
+      likes: maxLikes
+    }
+  )
+}
+
+
   
   module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
   }
