@@ -5,7 +5,7 @@ test('dummy returns one', () => {
     expect(result).toBe(1)
   })
 
-  describe('total likes', () => {
+describe('total likes', () => {
     const listWithOneBlog = [
       {
         _id: '5a422aa71b54a676234d17f8',
@@ -26,7 +26,20 @@ test('dummy returns one', () => {
       const result = listHelper.totalLikes(blogs)
       expect(result).toBe(36)
     })
+})
+
+describe('favorite blog', () =>{
+  test('The blog with most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    expect(result).toEqual(
+      {
+        title: "Canonical string reduction",
+        author: "Edsger W. Dijkstra",
+        likes: 12
+      }
+    )
   })
+})
 
 
 
