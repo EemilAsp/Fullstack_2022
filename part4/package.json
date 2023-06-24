@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "build:ui": "rm -rf build && cd ../frontend/ && npm run build && cp -r build ../backend",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
     "logs:prod": "fly logs",
     "lint": "eslint .",
-    "test": "jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
     "crypto-browserify": "^3.12.0",
     "eslint": "^8.32.0",
     "https-browserify": "^1.0.0",
@@ -35,9 +36,11 @@
     "react-app-rewired": "^2.0.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "supertest": "^6.3.3",
     "url": "^0.11.1"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globalTeardown": "./test-teardown.js"
   }
 }
