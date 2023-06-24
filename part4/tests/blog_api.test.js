@@ -35,6 +35,27 @@ describe('Identifier named as id', () => {
 })
 
 
+describe('A blog can be added to DB', () => {
+    test('Valid blog json can be added to db', async () => {
+        newBlog = helper.testBlog
+
+        await api
+                .post('/api/blogs')
+                .send(newBlog)
+                .expect(201)
+                .expect('Content-Type', /application\/json/)
+
+        const endBlog = await helper.blogsInDb()
+        expect(endBlog).toHaveLength(helper.initialBlogs.length +1)
+
+        const titles = endBlog.map(i => i.title)
+        expect(titles).toContain(
+            'Testauksen alkeet'
+        )
+    })
+})
+
+
 afterAll(async () => {
     await mongoose.connection.close()
   })
