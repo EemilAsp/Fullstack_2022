@@ -33,7 +33,7 @@ const mostBlogs = (blogs) =>{
       blogCount[author] = 1 // otherwise just 1 blog
     }
   })
-  // { 'Michael Chan': 1, 'Edsger W. Dijkstra': 2, 'Robert C. Martin': 3 }
+  // { 'Michael Chan': 1, 'Edsger W. Dijkstra': 2, 'Robert C. Martin': 3 
   console.log(blogCount)
   
   let maxBlogs = 0
