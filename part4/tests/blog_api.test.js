@@ -29,8 +29,8 @@ describe('Return all blogs', () =>{ // testing that db returns all the json obje
 describe('Identifier named as id', () => {
     test('test that saved objects have id', async () => {
         const res = (await api.get('/api/blogs')).body[0]
-        expect(res._id).toBeDefined() // By default the id is written as _id
-        expect(res.id).toBeUndefined() // so the test will not go through if these two will be swapped
+        expect(res.id).toBeDefined() // By default the id is written as _id
+        expect(res._id).toBeUndefined() // so the test will not go through if these two will be swapped
     })
 })
 
@@ -81,8 +81,26 @@ describe('Test title and URL', () =>{
                 .send(newBlog)
                 .expect(400)
         const blogsAtEnd = await helper.blogsInDb()
-        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)  
+    })
+})
+
+describe('Delete blog from DB', () => {
+    test('Test deleting a blog from db', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        console.log(blogsAtStart)
+        const blogToDelete =  blogsAtStart[0]
+        console.log(blogToDelete.id)
+        await api
+                .delete(`/api/blogs/${blogToDelete.id}`)
+                .expect(204)
         
+        blogsAfterDel = await helper.blogsInDb()
+        expect(blogsAfterDel).toHaveLength(helper.initialBlogs.length -1)
+
+        const contents = blogsAfterDel.map(i => i.title)
+        expect(contents).not.toContain(blogToDelete.title)
+
     })
 })
 

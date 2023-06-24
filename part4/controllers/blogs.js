@@ -16,9 +16,19 @@ blogRouter.post('/', async (request, response) => {
     result = await blog
               .save()
     response.status(201).json(result)
-    
   }
 })
+
+blogRouter.delete('/:id', async (request, response) =>{
+    try{
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+    }catch{
+      response.status(500).json({error: 'An error has ocurred while deleting'})
+    }
+})
+
+
 
 
 module.exports = blogRouter
