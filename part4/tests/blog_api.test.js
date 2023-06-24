@@ -55,6 +55,37 @@ describe('A blog can be added to DB', () => {
     })
 })
 
+describe('If no likes, add default 0', () =>{
+    test('Test the amount of likes', async () => {
+        newBlog = helper.testBlog
+        // not really needed since default is set to 0 in blog.js
+        //if(newBlog.likes === undefined){ 
+        //    newBlog.likes = 0;
+        //}
+        const res = await api
+                            .post('/api/blogs')
+                            .send(newBlog)
+                            .expect(201)
+        expect(res.body.likes).toEqual(0)
+    })
+})
+
+describe('Test title and URL', () =>{
+    test('Test if title or url missing', async () => {
+        newBlog = {
+            author: "Testi Teemu",
+            likes: 5
+        }
+        await api
+                .post('/api/blogs')
+                .send(newBlog)
+                .expect(400)
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+        
+    })
+})
+
 
 afterAll(async () => {
     await mongoose.connection.close()
