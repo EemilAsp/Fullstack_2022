@@ -26,4 +26,17 @@ describe('Return all blogs', () =>{ // testing that db returns all the json obje
     })
 })
 
+describe('Identifier named as id', () => {
+    test('test that saved objects have id', async () => {
+        const res = (await api.get('/api/blogs')).body[0]
+        expect(res._id).toBeDefined() // By default the id is written as _id
+        expect(res.id).toBeUndefined() // so the test will not go through if these two will be swapped
+    })
+})
+
+
+afterAll(async () => {
+    await mongoose.connection.close()
+  })
+
 
