@@ -3,6 +3,6 @@
 - More information can be found behind this link: https://fullstackopen.com/en/about
 
 References for the assingments:
-fullstack-hy2020, (2023), GitHub repository,
+- fullstack-hy2020, (2023), GitHub repository,
 https://github.com/fullstack-hy2020
 
