@@ -4,7 +4,7 @@ const blogSchema = mongoose.Schema({
   title: String,
   author: String,
   url: String,
-  likes: {
+  likes: { // 4.11
     type: Number,
     default: 0,
   }
