@@ -12,6 +12,19 @@ const tokenExtractor = (request,response, next) => {
   next()
 }
 
+const userExtractor = (request, response, next) => {
+  if(request.method === 'GET'){// this is for testing, get doesnt require user validation
+    return next()
+  }else{
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if(decodedToken === null || decodedToken === undefined){
+      request.user = null
+    }else{
+      request.user = User.findById(decodedToken.id)
+    }
+  next()
+}}
+
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
@@ -41,5 +54,6 @@ module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 }

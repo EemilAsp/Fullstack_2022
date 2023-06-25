@@ -2,21 +2,21 @@ const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const middleware = require('../utils/middleware')
 
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', {username: 1, name: 1})
   response.json(blogs)        
   })
 
-blogRouter.post('/', async (request, response) => {
+blogRouter.post('/', middleware.userExtractor, async (request, response) => {
   const blog = request.body
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if(!decodedToken.id){
+  const user = await request.user
+
+  console.log(user)
+  if(user === null){
     return response.status(401).json({error: 'Invalid token'})
   }
-  
-  const user = await User.findById(decodedToken.id)
-  console.log(user)
   
   if(blog.title === undefined || blog.url === undefined){
     response.status(400).end()
@@ -37,25 +37,26 @@ blogRouter.post('/', async (request, response) => {
   }
 })
 
-blogRouter.delete('/:id', async (request, response) =>{
-    try{
-    const blog = Blog.findById(request.params.id)
-    if(!blog){ // if blog is not found
-      response.status(204).end()
-    }
-    const user = request.user
-    if(blog.user.toString() === user.id.toString()){ // test if blog user id and request user id match
+blogRouter.delete('/:id', middleware.userExtractor, async (request, response) =>{
+    //try{
+    const blog = await Blog.findById(request.params.id)
+    console.log("blog", blog.user)
+    console.log("params id", request.params.id)
+    const user = await request.user
+    console.log(user._id.toString())
+    console.log(blog.user._id.toString())
+    if(blog.user.toString() === user._id.toString()){ // test if blog user id and request user id match
       await Blog.findByIdAndRemove(request.params.id) // delete if matches
       response.status(204).end()
     }
-    }catch{
+    //}catch{
       response.status(401).json({error: 'Only Blog writer can delete blog for database'})
-    }
+    //}
 })
 
-blogRouter.put('/:id', async (request, response) =>{
+blogRouter.put('/:id', middleware.userExtractor, async (request, response) =>{
     const blog = request.body
-    const user = await User.findOne({})
+    const user = request.user
 
     const updatedBlog = {
         title: blog.title,
