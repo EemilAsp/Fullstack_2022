@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const App = require('../App')
+const bcrypt = require('bcrypt')
 
+const App = require('../App')
 const api = supertest(App)
 
 const Blog = require('../models/blog')
@@ -25,7 +26,6 @@ describe('Return all blogs', () =>{ // testing that db returns all the json obje
         expect(res.body).toHaveLength(helper.initialBlogs.length)
     })
 })
-
 
 describe('Tests related to adding an object to DB', () => {
     test('Valid blog json can be added to db', async () => {
@@ -85,9 +85,7 @@ describe('Tests related to validating the objects in DB', () =>{
 describe('Deleting an object in DB', () => {
     test('test deleting an object', async () => {
         const blogsAtStart = await helper.blogsInDb()
-        console.log(blogsAtStart)
         const blogToDelete =  blogsAtStart[0]
-        console.log(blogToDelete.id)
         await api
                 .delete(`/api/blogs/${blogToDelete.id}`)
                 .expect(204)
@@ -129,7 +127,6 @@ describe('Updating an object in DB', () =>{
 
     })
 })
-
 
 afterAll(async () => {
     await mongoose.connection.close()
