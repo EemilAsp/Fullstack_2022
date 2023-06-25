@@ -39,10 +39,17 @@ blogRouter.post('/', async (request, response) => {
 
 blogRouter.delete('/:id', async (request, response) =>{
     try{
-    await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    const blog = Blog.findById(request.params.id)
+    if(!blog){ // if blog is not found
+      response.status(204).end()
+    }
+    const user = request.user
+    if(blog.user.toString() === user.id.toString()){ // test if blog user id and request user id match
+      await Blog.findByIdAndRemove(request.params.id) // delete if matches
+      response.status(204).end()
+    }
     }catch{
-      response.status(500).json({error: 'An error has ocurred while deleting'})
+      response.status(401).json({error: 'Only Blog writer can delete blog for database'})
     }
 })
 
