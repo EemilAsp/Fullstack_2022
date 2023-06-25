@@ -16,8 +16,12 @@ describe('Testing related to db user', () =>{
 
         const hashedPassWord = await bcrypt.hash('sekret', 10)
         const user = new User({username: 'root', hashedPassWord})
-
         await user.save()
+
+        const hashedPassWord2 = await bcrypt.hash('sekrets', 10)
+        const user2 = new User({username: 'Teemu Testaaja', hashedPassWord2})
+        await user2.save()
+        
     })
 
     test('Creating a new user with new name', async () => {
