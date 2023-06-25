@@ -65,6 +65,49 @@ describe('Testing related to db user', () =>{
         const usersAtEnd = await helper.usersInDb()
         expect(usersAtStart).toHaveLength(usersAtEnd.length)
     })
+
+    test("Testing that user with invalid username & password cannot be created", async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = {
+            username: 'mr',
+            name: 'teemu',
+            password: 'xx'
+        }
+        const res = await api
+                        .post("/api/users")
+                        .send(newUser)
+                        .expect(400)
+                        .expect('Content-Type', /application\/json/)
+
+        console.log(res.body.error)
+
+        expect(res.body.error).toContain('Username and password must be longer than 2 characters')
+
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtStart).toHaveLength(usersAtEnd.length)
+    })
+
+    test("Testing that user with invalid username & password cannot be created", async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = {
+            name: 'teemu',
+            password: 'xxxx'
+        }
+        const res = await api
+                        .post("/api/users")
+                        .send(newUser)
+                        .expect(400)
+                        .expect('Content-Type', /application\/json/)
+
+        console.log(res.body.error)
+
+        expect(res.body.error).toContain('Username and password must be defined')
+
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtStart).toHaveLength(usersAtEnd.length)
+
+    })
+
 })
 
 
