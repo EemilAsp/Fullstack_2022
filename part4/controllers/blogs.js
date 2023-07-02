@@ -21,7 +21,7 @@ blogRouter.post('/', middleware.userExtractor, async (request, response) => {
   }else{
     const newBlog = new Blog({
       title: blog.title,
-      author: blog.title,
+      author: blog.author,
       url: blog.url,
       likes: blog.likes,
       user: user._id
