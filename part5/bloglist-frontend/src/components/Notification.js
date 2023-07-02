@@ -6,13 +6,13 @@ const Notification = ({ message, type }) => {
     }
     if ( type === "error"){
         return (
-            <div class={'error'}>
+            <div className={'error'}>
               {message}
             </div>
           )
     }else{
         return (
-            <div class={'note'}>
+            <div className={'note'}>
               {message}
             </div>
           )
