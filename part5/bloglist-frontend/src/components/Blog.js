@@ -1,5 +1,3 @@
-import axios from 'axios'
-const baseUrl = '/api/blogs'
 
 
 const Blog = ({blog}) => (
