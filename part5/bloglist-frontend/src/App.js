@@ -15,8 +15,7 @@ const App = () => {
       setBlogs( blogs )
     )  
   }, [])
-
- //testing
+  
   const loginFunction = async (event) => {
     event.preventDefault()
     try{
