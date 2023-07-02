@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Toggleable from './components/Toggleable'
 
 const App = () => {
+  const [loginVisible, setLoginVisible] = useState(false)
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
   const [alertmessage, setAlertMessage] = useState([])
   const [type, setType] = useState('')
-  
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   useEffect(() => {
     const loggedUserJsonObject = window.localStorage.getItem('loggedBlogAppUser')
@@ -30,6 +30,8 @@ const App = () => {
       setBlogs( blogs )
     )  
   }, [])
+
+  const blogFormReference = useRef()
 
   const loginFunction = async (event) => {
     event.preventDefault()
@@ -54,25 +56,17 @@ const App = () => {
     console.log('logging in with', username, password)
   }
 
-  const addNewBlog = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
+  const addNewBlog = (newBlogObject) => {
+    blogFormReference.current.toggleVisibility()
     try{
-    blogService.create(blogObject)
+    blogService.create(newBlogObject)
     .then(returnedBlog => {
     setBlogs(blogs.concat(returnedBlog))
     setType('note')
-    setAlertMessage( `A new blog has been added: ${blogObject.title} by ${blogObject.author}`)
+    setAlertMessage( `A new blog has been added: ${newBlogObject.title} by ${newBlogObject.author}`)
       setTimeout(() => {
         setAlertMessage(null)
       }, 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
     })
     }catch(exception){
       setType('error')
@@ -89,69 +83,28 @@ const App = () => {
     console.log("logged out")
   }
 
-  const addBlogForm = () =>(
-    <div>
-      <h2>Create new blog</h2>
-      <form onSubmit={addNewBlog}>
-        <div>
-          Title:
-          <input
-            type="text"
-            value={title}
-            name="Title"
-            onChange={({ target }) => setTitle(target.value)} 
-          />
-        </div>
-        <div>
-          Author:
-          <input
-            type="text"
-            value={author}
-            name="Author"
-            onChange={({ target }) => setAuthor(target.value)} 
-          />
-        </div>
-        <div>
-          Url:
-          <input
-            type="text"
-            value={url}
-            name="Url"
-            onChange={({ target }) => setUrl(target.value)} 
-          />
-        </div>
-        <button type="submit">create</button>
-      </form>
-    </div>
-  );
+  const loginForm = () =>{
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
-
-  const loginForm = () =>(
-    <div>
-        <h2>Log in to application</h2>
-        <form onSubmit={loginFunction}>
-            <div>
-              username
-              <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-              />
-            </div>
-            <div>
-              password
-                <input
-                type="password"
-                value={password}
-                name="Password"
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </div>
-            <button type="submit">login</button>
-          </form>
+    return(
+      <div>
+      <div style={hideWhenVisible}>
+        <button onClick={() => setLoginVisible(true)}>log in</button>
+      </div>
+      <div style={showWhenVisible}>
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={loginFunction}
+        />
+        <button onClick={() => setLoginVisible(false)}>cancel</button>
+      </div>
     </div>
-  )
+    )
+  }
 
   const blogDisplay = () =>(
     <div>
@@ -174,7 +127,10 @@ const App = () => {
       </p>
       </div>}
       <div>
-      {user && addBlogForm()}
+      {user &&
+      <Toggleable buttonLabel="Add blog" ref={blogFormReference}>
+      <BlogForm addNewBlog={addNewBlog}/>
+      </Toggleable>}
       </div>
       <h2>blogs</h2>
       <div>
