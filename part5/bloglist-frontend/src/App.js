@@ -77,6 +77,22 @@ const App = () => {
     }
   }
 
+  const addLike = async (blog) => {
+    
+    const updatedBlog = {
+      id: blog.id,
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id,
+    }
+    await blogService.update(updatedBlog)
+    const updatedList = await blogService.getAll()
+    setBlogs(updatedList)
+    
+  }
+
   const logoutUser = async (event) =>{
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
@@ -109,7 +125,7 @@ const App = () => {
   const blogDisplay = () =>(
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} blogUserName={blog.user.name} />
+        <Blog key={blog.id} blog={blog} addLike={addLike} />
       )}
     </div>
   )

@@ -14,17 +14,26 @@ const getAll = () => {
 }
 
 
-const create = async newObject => {
+const create = async (newObject) => {
   const config = {
     headers: {Authorization: token},
   }
-  const response = await axios.post(baseUrl, newObject, config)
-  return response.data
+  const request = await axios.post(baseUrl, newObject, config)
+  return request.then(response => response.data)
+}
+
+const update = async (updatedObject) => {
+  const config = {
+    headers: {Authorization: token},
+  }
+  const response = await axios.put(`${baseUrl}/${updatedObject.id}`, updatedObject, config)
+  return(response.data)
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { 
                 getAll,
                 create,
-                setToken
+                setToken,
+                update
                }
