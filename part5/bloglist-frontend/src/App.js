@@ -60,8 +60,8 @@ const App = () => {
     blogFormReference.current.toggleVisibility()
     try{
     blogService.create(newBlogObject)
-    .then(returnedBlog => {
-    setBlogs(blogs.concat(returnedBlog))
+    blogService.getAll().then(blogs => {
+    setBlogs( blogs )
     setType('note')
     setAlertMessage( `A new blog has been added: ${newBlogObject.title} by ${newBlogObject.author}`)
       setTimeout(() => {
@@ -109,7 +109,7 @@ const App = () => {
   const blogDisplay = () =>(
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} blogUserName={blog.user.name} />
       )}
     </div>
   )
