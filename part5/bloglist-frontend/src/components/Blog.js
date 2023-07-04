@@ -12,7 +12,13 @@ const Blog = ({blog, addLike, removeBlog}) => {
             paddingLeft: 2,
             border: 'solid',
             borderWidth: 1,
-            marginBottom: 5
+            marginBottom: 5,
+          }
+
+          const noBullets = { //format list 
+            "list-style-type": "none", 
+            padding: 0, 
+            margin: 0, 
           }
           
 
@@ -23,14 +29,16 @@ const Blog = ({blog, addLike, removeBlog}) => {
                 <button onClick={() => setInfo(true)}>show</button>
               </div>
               <div style={showWhenVisible}>
-                <p>{blog.title} {blog.author} 
+                <ul style={noBullets}>
+                <li>{blog.title} {blog.author} 
                 <button onClick={() => setInfo(false)}>hide</button>
-                </p>
-                <p>{blog.url}</p>
-                <p>{blog.likes}
-                <button onClick={() => addLike(blog)}>Like</button></p>
-                <p>{blog.user.name}</p>
+                </li>
+                <li>{blog.url}</li>
+                <li>{blog.likes}
+                <button onClick={() => addLike(blog)}>Like</button></li>
+                <li>{blog.user.name}</li>
                 <button onClick={() => removeBlog(blog)}>Remove</button>
+                </ul>
               </div>
             </div>
             )
