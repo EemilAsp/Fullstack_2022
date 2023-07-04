@@ -78,7 +78,6 @@ const App = () => {
   }
 
   const addLike = async (blog) => {
-    
     const updatedBlog = {
       id: blog.id,
       title: blog.title,
@@ -90,7 +89,14 @@ const App = () => {
     await blogService.update(updatedBlog)
     const updatedList = await blogService.getAll()
     setBlogs(updatedList)
-    
+  }
+
+  const removeBlog = async (blog) => {
+    if(window.confirm(`Remove blog ${blog.name} by ${blog.author}`)){
+    await blogService.remove(blog)
+    const updatedList = await blogService.getAll()
+    setBlogs(updatedList)
+    }
   }
 
   const logoutUser = async (event) =>{
@@ -127,7 +133,7 @@ const App = () => {
     return(
     <div>
       {sortedBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike} />
+        <Blog key={blog.id} blog={blog} addLike={addLike} removeBlog={removeBlog} />
       )}
     </div>
   )}
