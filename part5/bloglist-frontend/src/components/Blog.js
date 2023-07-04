@@ -16,7 +16,7 @@ const Blog = ({blog, addLike, removeBlog}) => {
           }
 
           const noBullets = { //format list 
-            "list-style-type": "none", 
+            listStyleType: "none", 
             padding: 0, 
             margin: 0, 
           }
