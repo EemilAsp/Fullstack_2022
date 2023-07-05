@@ -34,4 +34,22 @@ describe('Blog app', function() {
     })
   })
 
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.contains('log in').click()
+      cy.get('#username').type('Teemuntesti')
+      cy.get('#password').type('Teemutestaa321')
+      cy.get('#loginbtn').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('Add blog').click()
+      cy.get('#titleField').type('Teemun testikirja')
+      cy.get('#authorField').type('Teemu Testaaja')
+      cy.get('#urlField').type('https://www.teemuntestikirja.fi/testi')
+      cy.get('#submitbtn').click()
+      cy.get('.note').contains('A new blog has been added: Teemun testikirja by Teemu Testaaja')
+    })
+  })
+
 })
