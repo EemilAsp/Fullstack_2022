@@ -4,11 +4,6 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from '../components/Blog'
 
-const testUser = {
-  username: 'Teemuntesti',
-  name: 'Teemu',
-}
-
 const blog = {
   title: 'Component testing is done with react-testing-library',
   author: 'Teemu testaaja',
@@ -21,20 +16,21 @@ const blog = {
 }
 
 
-describe('Basic test', () => { //5.13
-  test('renders title', async () => {
-    render(<Blog blog={blog} user={testUser} />)
+describe('Basic test on UI', () => { //5.13
+
+  test('Renders title and author', async () => {
+    render(<Blog blog={blog} />)
     const title = screen.getByText('Component testing is done with react-testing-library')
     const author = screen.getByText('Teemu testaaja')
     expect(title).toBeDefined()
     expect(author).toBeDefined()
   })
 
-  test('All info showed', async () => { //5.14
-    render(<Blog blog={blog} user={testUser} />)
-    const us = userEvent.setup()
+  test('All required info showed', async () => { //5.14
+    render(<Blog blog={blog}/>)
+    const mockUser = userEvent.setup()
     const button = screen.getByText('Component testing is done with react-testing-library')
-    await us.click(button)
+    await mockUser.click(button)
     const title = screen.getByText('Component testing is done with react-testing-library')
     const author = screen.getByText('Teemu testaaja')
     const url = screen.getByText('Teemu testaaja')
@@ -45,6 +41,18 @@ describe('Basic test', () => { //5.13
     expect(url).toBeDefined()
     expect(username).toBeDefined()
     expect(likes).toBeDefined()
+  })
+
+  test('Testing like button functionality', async () => {
+    const addLike = jest.fn()
+    render(<Blog blog={blog} addLike={addLike}/>)
+    const mockUser = userEvent.setup()
+    const button1 = screen.getByText('Component testing is done with react-testing-library')
+    await mockUser.click(button1)
+    const button2 = screen.getByText('Like')
+    await mockUser.click(button2)
+    await mockUser.click(button2)
+    expect(addLike.mock.calls).toHaveLength(2)
   })
 
 })
