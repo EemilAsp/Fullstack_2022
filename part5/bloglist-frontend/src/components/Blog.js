@@ -27,18 +27,18 @@ const Blog = ({ blog, addLike, removeBlog }) => {
       <div style={hideWhenVisible}>
         <p>{blog.title}</p>
         <p>{blog.author}</p>
-        <button onClick={() => setInfo(true)}>show</button>
+        <button id='showbtn' onClick={() => setInfo(true)}>show</button>
       </div>
       <div style={showWhenVisible}>
         <ul style={noBullets}>
           <li>{blog.title} {blog.author}
-            <button onClick={() => setInfo(false)}>hide</button>
+            <button id='hidebtn' onClick={() => setInfo(false)}>hide</button>
           </li>
           <li>{blog.url}</li>
           <li>{blog.likes}
-            <button onClick={() => addLike(blog)}>Like</button></li>
+            <button id='likebtn' onClick={() => addLike(blog)}>Like</button></li>
           <li>{blog.user.name}</li>
-          <button onClick={() => removeBlog(blog)}>Remove</button>
+          <button id='removebtn' onClick={() => removeBlog(blog)}>Remove</button>
         </ul>
       </div>
     </div>
