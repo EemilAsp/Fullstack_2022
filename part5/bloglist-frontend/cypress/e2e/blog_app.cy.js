@@ -5,6 +5,12 @@ const testUser = {
   password: 'Teemutestaa321'
 }
 
+const testUser2 = {
+  name: 'Teemu Testaajanpoika',
+  username: 'Teemuntesti2',
+  password: 'Teemutestaa4321'
+}
+
 const testBlog = {
   title: 'Teemun testikirja',
   author: 'Teemu Testaaja',
@@ -59,6 +65,13 @@ describe('Blog app', function() {
       cy.get('#showbtn').click()
       cy.get('#likebtn').click()
       cy.contains('1')
+    })
+
+    it('A blog can be removed', function() {
+      cy.createBlog({ title: testBlog.title, author: testBlog.author, url: testBlog.url })
+      cy.get('#showbtn').click()
+      cy.get('#removebtn').click()
+      cy.on('window:confirm', () => {return(true)})
     })
 
   })

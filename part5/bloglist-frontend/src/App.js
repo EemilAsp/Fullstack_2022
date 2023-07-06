@@ -54,21 +54,20 @@ const App = () => {
     console.log('logging in with', username, password)
   }
 
-  const addNewBlog = (newBlogObject) => {
-    blogFormReference.current.toggleVisibility()
+  const addNewBlog = async (newBlogObject) => {
     try {
-      blogService.create(newBlogObject)
-      blogService.getAll().then((blogs) => {
-        setBlogs(blogs)
-        setType('note')
-        setAlertMessage(
-          `A new blog has been added: ${newBlogObject.title} by ${newBlogObject.author}`
-        )
-        setTimeout(() => {
-          setAlertMessage(null)
-        }, 5000)
-      })
+      await blogService.create(newBlogObject)
+      blogFormReference.current.toggleVisibility()
+      console.log(newBlogObject)
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+      setType('note')
+      setAlertMessage(`A new blog has been added: ${newBlogObject.title} by ${newBlogObject.author}`)
+      setTimeout(() => {
+        setAlertMessage(null)
+      }, 5000)
     } catch (exception) {
+      console.log(exception)
       setType('error')
       setAlertMessage('Error while adding a blog')
       setTimeout(() => {
@@ -154,7 +153,7 @@ const App = () => {
           {' '}
           <p>
             {user.name} logged in
-            <button onClick={logoutUser}>Logout</button>
+            <button id='logoutbtn' onClick={logoutUser}>Logout</button>
           </p>
         </div>
       )}
