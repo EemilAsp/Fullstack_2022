@@ -74,6 +74,15 @@ describe('Blog app', function() {
       cy.on('window:confirm', () => {return(true)})
     })
 
+    it('A blog cannot be removed if not blog creator', function() {
+      cy.createBlog({ title: testBlog.title, author: testBlog.author, url: testBlog.url })
+      cy.get('#logoutbtn').click()
+      cy.request('POST', 'http://localhost:3003/api/users/',testUser2)
+      cy.login({ username: testUser2.username, password: testUser2.password })
+      cy.get('#showbtn').click()
+      cy.contains('#removebtn').should('not.exist')
+    })
+
   })
 
 })
