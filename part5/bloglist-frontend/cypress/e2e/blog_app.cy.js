@@ -12,9 +12,24 @@ const testUser2 = {
 }
 
 const testBlog = {
-  title: 'Teemun testikirja',
+  title: 'Teemun testikirja part1',
   author: 'Teemu Testaaja',
-  url: 'https://www.teemuntestikirja.fi/testi'
+  url: 'https://www.teemuntestikirja.fi/part1',
+  likes: 2
+}
+
+const testBlog2 = {
+  title: 'Teemun testikirja part2',
+  author: 'Teemu Testaaja',
+  url: 'https://www.teemuntestikirja.fi/part2',
+  likes: 3
+}
+
+const testBlog3 = {
+  title: 'Teemun testikirja part3',
+  author: 'Teemu Testaaja',
+  url: 'https://www.teemuntestikirja.fi/part3',
+  likes: 7
 }
 
 describe('Blog app', function() {
@@ -57,7 +72,7 @@ describe('Blog app', function() {
       cy.get('#authorField').type(testBlog.author)
       cy.get('#urlField').type(testBlog.url)
       cy.get('#submitbtn').click()
-      cy.get('.note').contains('A new blog has been added: Teemun testikirja by Teemu Testaaja')
+      cy.get('.note').contains('A new blog has been added: Teemun testikirja part1 by Teemu Testaaja')
     })
 
     it('A blog can be liked', function() {
@@ -82,7 +97,37 @@ describe('Blog app', function() {
       cy.get('#showbtn').click()
       cy.contains('#removebtn').should('not.exist')
     })
+  })
 
+  describe('Blogs are ordered correctly', function() {
+    beforeEach(function() {
+      cy.login({ username: testUser.username, password: testUser.password })
+      cy.createBlog({ title: testBlog.title, author: testBlog.author, url: testBlog.url, likes: testBlog.likes })
+      cy.createBlog({ title: testBlog2.title, author: testBlog2.author, url: testBlog2.url, likes: testBlog2.likes })
+      cy.createBlog({ title: testBlog3.title, author: testBlog3.author, url: testBlog3.url, likes: testBlog3.likes })
+    })
+    it('blogs sorted correctly', function() {
+      cy.get('.blog').each((blog, index) => {
+        cy.wrap(blog).find('#showbtn').click()
+        if(index === 0){
+          cy.wrap(blog).find('#likebtn').click()
+          cy.wait(1500)
+          cy.wrap(blog).find('#likebtn').click()
+          cy.wait(1500)
+        }else if(index === 2){
+          cy.wrap(blog).find('#likebtn').click()
+          cy.wait(1500)
+          cy.wrap(blog).find('#likebtn').click()
+          cy.wait(1500)
+          cy.wrap(blog).find('#likebtn').click()
+          cy.wait(1500)
+          cy.wrap(blog).find('#likebtn').click()
+        }
+      })
+      cy.get('.blog').eq(0).should('contain', 'https://www.teemuntestikirja.fi/part3')
+      cy.get('.blog').eq(1).should('contain', 'https://www.teemuntestikirja.fi/part1')
+      cy.get('.blog').eq(2).should('contain', 'https://www.teemuntestikirja.fi/part2')
+    })
   })
 
 })

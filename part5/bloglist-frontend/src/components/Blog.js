@@ -33,7 +33,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div style={hideWhenVisible}>
         <p>{blog.title}</p>
         <p>{blog.author}</p>
