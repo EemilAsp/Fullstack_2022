@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { notificationChange } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 import { addLike } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
@@ -22,8 +22,7 @@ const AnecdoteList = () => {
 
     const addVote = (anecdote) =>{
       dispatch(addLike(anecdote))
-      dispatch(notificationChange(`Anecdote: "${anecdote.content}" has been liked`))
-      setTimeout(() => dispatch(notificationChange(null)), 5000)
+      dispatch(setNotification(`You voted '${anecdote.content}'`, 5))
     }
 
     return (
