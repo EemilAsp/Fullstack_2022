@@ -9,6 +9,7 @@ import anecdoteReducer from './reducers/anecdoteReducer'
 import filterReducer from './reducers/filterReducer'
 import notificationReducer from './reducers/notificationReducer'
 
+
 const store = configureStore({
   reducer: {
     anecdotes: anecdoteReducer,
@@ -18,6 +19,7 @@ const store = configureStore({
 })
 
 console.log(store.getState())
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
