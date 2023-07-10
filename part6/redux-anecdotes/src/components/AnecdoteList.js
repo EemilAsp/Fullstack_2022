@@ -2,13 +2,26 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addLike } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(state => state)
-    const sortedAnecdotes = [...anecdotes].sort((a , b) => b.votes - a.votes)
+    
+
+    const anecdotes = useSelector(state => { // filtering anecdotes based on filter input
+        if ( state.filter === null){
+            console.log(state.anecdotes)
+            return state.anecdotes
+        }else{
+            const filteredAnecdotes = 
+                state.anecdotes.filter((anecdote =>
+                anecdote.content.toLowerCase().includes(state.filter.toLowerCase())))
+            return filteredAnecdotes
+        }
+    })
+
+    const anecdotesSorted = [...anecdotes].sort((a , b) => b.votes - a.votes) // sorting
     const dispatch = useDispatch()
 
     return (
         <div>
-          {sortedAnecdotes.map(anecdote =>
+          {anecdotesSorted.map(anecdote =>
             <div key={anecdote.id}>
               <div>
                 {anecdote.content}
