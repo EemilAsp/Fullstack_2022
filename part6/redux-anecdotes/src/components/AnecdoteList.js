@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { addLike } from '../reducers/anecdoteReducer'
+import { notificationChange } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
     
@@ -19,6 +20,12 @@ const AnecdoteList = () => {
     const anecdotesSorted = [...anecdotes].sort((a , b) => b.votes - a.votes) // sorting
     const dispatch = useDispatch()
 
+    const addVote = (anecdote) =>{
+      dispatch(addLike(anecdote.id))
+      dispatch(notificationChange(`Anecdote ${anecdote.content} has been liked`))
+      setTimeout(() => dispatch(notificationChange(null)), 5000)
+    }
+
     return (
         <div>
           {anecdotesSorted.map(anecdote =>
@@ -28,7 +35,7 @@ const AnecdoteList = () => {
               </div>
               <div>
                 has {anecdote.votes}
-                <button onClick={() => dispatch(addLike(anecdote.id))}>vote</button>
+                <button onClick={() => addVote(anecdote)}>vote</button>
               </div>
             </div>
           )}
