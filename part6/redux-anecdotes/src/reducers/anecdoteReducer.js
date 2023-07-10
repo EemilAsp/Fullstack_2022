@@ -28,6 +28,17 @@ export const addLike = (id) => {
   }
 }
 
+export const createAnecdote = (content) => {
+  return{
+    type: 'NEWANECDOTE',
+    payload: {
+      content: content,
+      id: getId(),
+      votes: 0
+    }
+  }
+}
+
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
@@ -42,8 +53,10 @@ const reducer = (state = initialState, action) => {
       }
       return state.map(anecdote => 
         anecdote.id !== id ? anecdote : changedAnecdote)
-      default:
-        return state  
+    case 'NEWANECDOTE':
+      return [...state, action.payload]
+    default:
+      return state  
   }
 }
 
