@@ -21,14 +21,14 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-export const addLike = (id) => {
+export const addLike = (id) => { // 6.6
   return {
     type: 'ADDLIKE',
     payload: { id }
   }
 }
 
-export const createAnecdote = (content) => {
+export const createAnecdote = (content) => { // 6.6
   return{
     type: 'NEWANECDOTE',
     payload: {
