@@ -22,7 +22,7 @@ const AnecdoteList = () => {
 
     const addVote = (anecdote) =>{
       dispatch(addLike(anecdote.id))
-      dispatch(notificationChange(`Anecdote ${anecdote.content} has been liked`))
+      dispatch(notificationChange(`Anecdote: "${anecdote.content}" has been liked`))
       setTimeout(() => dispatch(notificationChange(null)), 5000)
     }
 
