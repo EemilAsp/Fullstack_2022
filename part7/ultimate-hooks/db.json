@@ -7,6 +7,18 @@
     {
       "id": 2,
       "content": "best feature ever <3"
+    },
+    {
+      "content": "a new hook test",
+      "id": 3
+    },
+    {
+      "content": "a new hook test",
+      "id": 4
+    },
+    {
+      "content": "a new hook test",
+      "id": 5
     }
   ],
   "persons": [
@@ -19,6 +31,11 @@
       "id": 2,
       "name": "Tarja Halonen",
       "number": "040-2223334"
+    },
+    {
+      "name": "Teemu testaaja",
+      "number": "050-1234567",
+      "id": 3
     }
   ]
 }

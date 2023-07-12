@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import useResource from './hooks/index.js';
 
 const useField = (type) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   const onChange = (event) => {
     setValue(event.target.value);
@@ -15,29 +15,13 @@ const useField = (type) => {
   };
 };
 
-const useResource = (baseUrl) => {
-  const [resources, setResources] = useState([]);
-
-  // ...
-
-  const create = (resource) => {
-    // ...
-  };
-
-  const service = {
-    create,
-  };
-
-  return [resources, service];
-};
-
 const App = () => {
-  const content = useField("text");
-  const name = useField("text");
-  const number = useField("text");
+  const content = useField('text');
+  const name = useField('text');
+  const number = useField('text');
 
-  const [notes, noteService] = useResource("http://localhost:3005/notes");
-  const [persons, personService] = useResource("http://localhost:3005/persons");
+  const [notes, noteService] = useResource('http://localhost:3005/notes');
+  const [persons, personService] = useResource('http://localhost:3005/persons');
 
   const handleNoteSubmit = (event) => {
     event.preventDefault();
