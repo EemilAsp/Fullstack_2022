@@ -87,7 +87,7 @@ const CreateNew = (props) => {
   }
 
   const resetForm = () => { // set values to blank when reset
-    console.log('Reseting')
+    console.log('Reseting') // no error in cmd so 7.6 done
     content.onChange({target: { value: "" }}) 
     author.onChange({target: { value: "" }})
     info.onChange({target: { value: "" }})
