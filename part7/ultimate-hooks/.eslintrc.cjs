@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-undef
 module.exports = {
+  // 7.9 done also
   env: {
     browser: true,
     es6: true,
