@@ -1,0 +1,17 @@
+{
+  "name": "graphql",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@apollo/server": "^4.7.5",
+    "graphql": "^16.7.1"
+  },
+  "main": "library-backend.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eemil Aspholm",
+  "license": "ISC",
+  "description": ""
+}
