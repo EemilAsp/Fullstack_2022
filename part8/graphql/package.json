@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "@apollo/server": "^4.7.5",
+    "apollo": "^2.34.0",
     "graphql": "^16.7.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "server": "^1.0.38"
   },
   "main": "library-backend.js",
   "scripts": {
