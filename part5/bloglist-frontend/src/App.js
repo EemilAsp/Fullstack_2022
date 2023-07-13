@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -6,15 +5,17 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Toggleable from './components/Toggleable'
+import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [loginVisible, setLoginVisible] = useState(false)
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [alertmessage, setAlertMessage] = useState([])
-  const [type, setType] = useState('')
 
   useEffect(() => {
     const loggedUserJsonObject =
@@ -44,12 +45,11 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      dispatch(setNotification(`${user.username} has logged in`, 5, 'message'))
     } catch (exception) {
-      setType('error')
-      setAlertMessage('Invalid credentials')
-      setTimeout(() => {
-        setAlertMessage(null)
-      }, 5000)
+      dispatch(
+        setNotification('An error has ocurred while logging in', 5, 'error'),
+      )
     }
     console.log('logging in with', username, password)
   }
@@ -61,18 +61,17 @@ const App = () => {
       console.log(newBlogObject)
       const blogs = await blogService.getAll()
       setBlogs(blogs)
-      setType('note')
-      setAlertMessage(`A new blog has been added: ${newBlogObject.title} by ${newBlogObject.author}`)
-      setTimeout(() => {
-        setAlertMessage(null)
-      }, 5000)
+      dispatch(
+        setNotification(
+          `A new blog ${newBlogObject.title} by ${newBlogObject.author} has been added`,
+          5,
+          'message',
+        ),
+      )
     } catch (exception) {
-      console.log(exception)
-      setType('error')
-      setAlertMessage('Error while adding a blog')
-      setTimeout(() => {
-        setAlertMessage(null)
-      }, 5000)
+      dispatch(
+        setNotification('An error has ocurred while adding a blog', 5, 'error'),
+      )
     }
   }
 
@@ -95,6 +94,13 @@ const App = () => {
       await blogService.remove(blog)
       const updatedList = await blogService.getAll()
       setBlogs(updatedList)
+      dispatch(
+        setNotification(
+          'A blog has been removed from the bloglist',
+          5,
+          'message',
+        ),
+      )
     }
   }
 
@@ -147,20 +153,22 @@ const App = () => {
   return (
     <div>
       <h1>Blog application</h1>
-      <Notification message={alertmessage} type={type} />
+      <Notification />
       <div>{!user && loginForm()}</div>
       {user && (
         <div>
           {' '}
           <p>
             {user.name} logged in
-            <button id='logoutbtn' onClick={logoutUser}>Logout</button>
+            <button id="logoutbtn" onClick={logoutUser}>
+              Logout
+            </button>
           </p>
         </div>
       )}
       <div>
         {user && (
-          <Toggleable buttonLabel='Add blog' ref={blogFormReference}>
+          <Toggleable buttonLabel="Add blog" ref={blogFormReference}>
             <BlogForm addNewBlog={addNewBlog} />
           </Toggleable>
         )}
