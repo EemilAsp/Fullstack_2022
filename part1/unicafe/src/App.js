@@ -1,52 +1,80 @@
-import { useState } from 'react'
+import { useState } from "react"
 
-const Button = ({handleClick, text}) => {
-  return(
-  <button onClick={handleClick}>{text}</button>
-  )
+const Button = ({ handleClick, text }) => {
+  return <button onClick={handleClick}>{text}</button>
 }
 
-const Stat = ({type, value, symbol}) => 
-<>{type}{value}{symbol}</>
+const Stat = ({ type, value, symbol }) => (
+  <>
+    {type}
+    {value}
+    {symbol}
+  </>
+)
 
-const Statistics = ({good, neutral, bad}) => {
+const Statistics = ({ good, neutral, bad }) => {
   const total = good + neutral + bad
-  const average = (good - bad)/total
-  const positive = (good/total)*100
+  const average = (good - bad) / total
+  const positive = (good / total) * 100
 
-  if(total === 0){
-  return(
-    <div>
-      <p>No feedback given</p>
-    </div>
-  )}
-  return(
+  if (total === 0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
+  return (
     <div>
       <table>
         <tbody>
           <tr>
-            <td><Stat type="good" /></td>
-            <td><Stat value={good} symbol="" /></td>
+            <td>
+              <Stat type="good" />
+            </td>
+            <td>
+              <Stat value={good} symbol="" />
+            </td>
           </tr>
           <tr>
-            <td><Stat type="neutral" /></td>
-            <td><Stat value={neutral} symbol="" /></td>
+            <td>
+              <Stat type="neutral" />
+            </td>
+            <td>
+              <Stat value={neutral} symbol="" />
+            </td>
           </tr>
           <tr>
-            <td><Stat type="bad" /></td>
-            <td><Stat value={bad} symbol="" /></td>
+            <td>
+              <Stat type="bad" />
+            </td>
+            <td>
+              <Stat value={bad} symbol="" />
+            </td>
           </tr>
           <tr>
-            <td><Stat type="total" /></td>
-            <td><Stat value={total} symbol="" /></td>
+            <td>
+              <Stat type="total" />
+            </td>
+            <td>
+              <Stat value={total} symbol="" />
+            </td>
           </tr>
           <tr>
-            <td><Stat type="average" /></td>
-            <td><Stat value={average} symbol="" /></td>
+            <td>
+              <Stat type="average" />
+            </td>
+            <td>
+              <Stat value={average} symbol="" />
+            </td>
           </tr>
           <tr>
-            <td><Stat type="positive" /></td>
-            <td><Stat value={positive} symbol="%" /></td>
+            <td>
+              <Stat type="positive" />
+            </td>
+            <td>
+              <Stat value={positive} symbol="%" />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -60,28 +88,28 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const handleGoodClick = () =>{
+  const handleGoodClick = () => {
     setGood(good + 1)
   }
 
-  const handleNeutralClick = () =>{
+  const handleNeutralClick = () => {
     setNeutral(neutral + 1)
   }
 
-  const handleBadClick = () =>{
+  const handleBadClick = () => {
     setBad(bad + 1)
   }
 
-  return(
-      <div>
+  return (
+    <div>
       <h1>give feedback</h1>
-      <Button handleClick={() =>handleGoodClick()} text='good'/>
-      <Button handleClick={() =>handleNeutralClick()} text='neutral'/>
-      <Button handleClick={() =>handleBadClick()} text='bad'/>
+      <Button handleClick={() => handleGoodClick()} text="good" />
+      <Button handleClick={() => handleNeutralClick()} text="neutral" />
+      <Button handleClick={() => handleBadClick()} text="bad" />
       <h2>statistics</h2>
       <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
-      </div>
-       );
+    </div>
+  )
 }
 
 export default App
