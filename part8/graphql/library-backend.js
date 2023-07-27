@@ -168,6 +168,8 @@ const resolvers = {
         return {
           name: authorname,
           bookCount: bookCount,
+          born: author.born,
+          id: author.id,
         }
       })
     },
