@@ -1,19 +1,35 @@
-import { useState } from "react"
+import React, { useState } from "react"
+import Select from "react-select"
 
 const Authors = ({ show, authors, editAuthor }) => {
-  const [name, setName] = useState("")
+  const [selectedAuthor, setSelectedAuthor] = useState(null)
   const [born, setBorn] = useState("")
+
   if (!show) {
     return null
   }
 
+  const selectOptions = authors.map((author) => ({
+    value: author.name,
+    label: author.name,
+  }))
+
+  const changeSelectedItem = (selectedItem) => {
+    setSelectedAuthor(selectedItem)
+  }
+
   const submit = async (event) => {
     event.preventDefault()
-    console.log("Edit author...")
-
-    editAuthor({ variables: { name, setBornTo: +born } })
-    setName("")
-    setBorn("")
+    try {
+      console.log("Edit author...")
+      editAuthor({
+        variables: { name: selectedAuthor.value, setBornTo: +born },
+      })
+      setSelectedAuthor(null)
+      setBorn("")
+    } catch (exception) {
+      console.log("error while editing author")
+    }
   }
 
   return (
@@ -42,10 +58,11 @@ const Authors = ({ show, authors, editAuthor }) => {
         <p></p>
         <form onSubmit={submit}>
           <div>
-            name
-            <input
-              value={name}
-              onChange={({ target }) => setName(target.value)}
+            <Select
+              value={selectedAuthor}
+              onChange={changeSelectedItem}
+              options={selectOptions}
+              placeholder="Select author"
             />
           </div>
           <div>
