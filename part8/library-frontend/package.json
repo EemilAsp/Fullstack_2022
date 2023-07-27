@@ -15,12 +15,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "frontend": "react-scripts start",
-    "backend": "cd ../graphql && npm run start"
+    "backend": "cd ../graphql && npm run dev"
   },
   "eslintConfig": {
     "extends": [
