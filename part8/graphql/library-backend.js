@@ -65,6 +65,7 @@ type Mutation {
 const resolvers = {
   Book: {
     author: async (root) => {
+      // Author works in allBooks
       const author = await Author.findById(root.author)
       return author
     },
@@ -73,12 +74,42 @@ const resolvers = {
     authorCount: async () => Author.collection.countDocuments(),
     bookCount: async () => Book.collection.countDocuments(),
     allBooks: async (root, args) => {
-      const books = await Book.find({})
-      return books
+      //Allbooks work with filters
+      if (args.author && args.genre) {
+        const author = await Author.findOne({ name: args.author })
+        const allbooks = await Book.find({
+          author: author._id,
+          genres: args.genre,
+        })
+        return allbooks
+      } else if (args.author) {
+        const author = await Author.findOne({ name: args.author })
+        const allbooks = await Book.find({
+          author: author._id,
+        })
+        return allbooks
+      } else if (args.genre) {
+        const allbooks = await Book.find({
+          genres: args.genre,
+        })
+        return allbooks
+      } else {
+        const allbooks = await Book.find({})
+        return allbooks
+      }
     },
     allAuthors: async () => {
       const authors = await Author.find({})
-      return authors
+      const allauthors = await authors.map((author) => {
+        bookCount = Book.collection.countDocuments({ author: author._id })
+        return {
+          name: author.name,
+          bookCount: bookCount,
+          born: author.born,
+          id: author.id,
+        }
+      })
+      return allauthors
     },
   },
   Mutation: {
@@ -103,6 +134,7 @@ const resolvers = {
       return res
     },
     editAuthor: async (root, args) => {
+      // edit author works
       const author = await Author.findOne({ name: args.name })
       if (!author) {
         return null
