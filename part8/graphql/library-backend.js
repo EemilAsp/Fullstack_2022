@@ -1,6 +1,7 @@
+const { GraphQLError } = require("graphql")
+
 const { ApolloServer } = require("@apollo/server")
 const { startStandaloneServer } = require("@apollo/server/standalone")
-
 require("dotenv").config()
 const mongoose = require("mongoose")
 mongoose.set("strictQuery", false)
@@ -121,27 +122,60 @@ const resolvers = {
           name: args.author,
           born: null,
         })
-        await newAuthor.save()
+        try {
+          await newAuthor.save()
+        } catch (error) {
+          throw new GraphQLError("Saving new author failed", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: args.name,
+              error,
+            },
+          })
+        }
       }
 
       const author = await Author.findOne({ name: args.author })
 
       const newBook = new Book({
-        ...args,
+        title: args.title,
+        published: args.published,
+        genres: args.genres,
         author: author._id,
       })
-      const res = await newBook.save()
-      return res
+
+      try {
+        const book = await newBook.save()
+        return book
+      } catch (error) {
+        throw new GraphQLError("Saving new book failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: newBook.toString(),
+            error,
+          },
+        })
+      }
     },
     editAuthor: async (root, args) => {
       // edit author works
-      const author = await Author.findOne({ name: args.name })
-      if (!author) {
-        return null
+      try {
+        const author = await Author.findOne({ name: args.name })
+        if (!author) {
+          return null
+        }
+        author.born = args.setBornTo
+        await author.save()
+        return author
+      } catch (error) {
+        throw new GraphQLError("Editing author failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.name,
+            error,
+          },
+        })
       }
-      author.born = args.setBornTo
-      await author.save()
-      return author
     },
   },
 }
