@@ -21,11 +21,23 @@ mongoose
   })
 
 const typeDefs = `
+type User {
+  username: String!
+  favoriteGenre: String!
+  id: ID!
+}
+
+type Token {
+  value: String!
+}
+
+
 type Query {
   authorCount: Int!
   allBooks(author: String, genre: String): [Book!]!
   bookCount: Int!
   allAuthors(born: YesNo): [Author!]!
+  me: User
 }
 
 enum YesNo {
@@ -60,6 +72,15 @@ type Mutation {
     name: String!
     setBornTo: Int!
   ): Author
+
+  createUser(
+    username: String!
+    favoriteGenre: String!
+  ): User
+  login(
+    username: String!
+    password: String!
+  ): Token
 }
 `
 
