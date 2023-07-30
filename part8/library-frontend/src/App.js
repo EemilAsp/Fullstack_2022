@@ -2,62 +2,23 @@ import { useState } from "react"
 import Authors from "./components/Authors"
 import Books from "./components/Books"
 import NewBook from "./components/NewBook"
-import { gql, useQuery, useMutation } from "@apollo/client"
+import LoginForm from "./components/LoginForm"
+import { useQuery, useMutation, useApolloClient } from "@apollo/client"
+import { EditAuthor, GetBooks, GetAuthors, addBook } from "./queries"
 
-const GetAuthors = gql`
-  query {
-    allAuthors {
-      name
-      bookCount
-      born
-    }
+const Notify = ({ errorMessage }) => {
+  if (!errorMessage) {
+    return null
   }
-`
-
-const GetBooks = gql`
-  query AllBooks {
-    allBooks {
-      title
-      author
-      published
-    }
-  }
-`
-
-const addBook = gql`
-  mutation AddBook(
-    $title: String!
-    $author: String!
-    $published: Int!
-    $genres: [String!]!
-  ) {
-    addBook(
-      title: $title
-      author: $author
-      published: $published
-      genres: $genres
-    ) {
-      author
-      genres
-      id
-      published
-      title
-    }
-  }
-`
-
-const EditAuthor = gql`
-  mutation EditAuthor($name: String!, $setBornTo: Int!) {
-    editAuthor(name: $name, setBornTo: $setBornTo) {
-      name
-      born
-    }
-  }
-`
+  return <div style={{ color: "red" }}>{errorMessage}</div>
+}
 
 const App = () => {
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [token, setToken] = useState(null)
   const [page, setPage] = useState("authors")
   const result = useQuery(page === "authors" ? GetAuthors : GetBooks)
+  const client = useApolloClient()
   const [createBook] = useMutation(addBook, {
     refetchQueries: [{ query: GetBooks }],
   })
@@ -69,12 +30,37 @@ const App = () => {
     return <div>loading...</div>
   }
 
+  const notify = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 10000)
+  }
+
+  if (!token) {
+    return (
+      <div>
+        <Notify errorMessage={errorMessage} />
+        <h2>Login</h2>
+        <LoginForm setToken={setToken} setError={notify} />
+      </div>
+    )
+  }
+
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+  }
+
   return (
     <div>
       <div>
+        <Notify errorMessage={errorMessage} />
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
         <button onClick={() => setPage("add")}>add book</button>
+        <button onClick={logout}>logout</button>
       </div>
 
       <Authors
