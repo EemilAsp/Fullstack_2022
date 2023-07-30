@@ -3,8 +3,9 @@ import Authors from "./components/Authors"
 import Books from "./components/Books"
 import NewBook from "./components/NewBook"
 import LoginForm from "./components/LoginForm"
+import Recommended from "./components/Recommended"
 import { useQuery, useMutation, useApolloClient } from "@apollo/client"
-import { EditAuthor, GetBooks, GetAuthors, addBook } from "./queries"
+import { EditAuthor, GetBooks, GetAuthors, addBook, userQuery } from "./queries"
 
 const Notify = ({ errorMessage }) => {
   if (!errorMessage) {
@@ -14,11 +15,15 @@ const Notify = ({ errorMessage }) => {
 }
 
 const App = () => {
+  const client = useApolloClient()
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(null)
   const [page, setPage] = useState("authors")
-  const result = useQuery(page === "authors" ? GetAuthors : GetBooks)
-  const client = useApolloClient()
+
+  const authors = useQuery(GetAuthors)
+  const books = useQuery(GetBooks)
+  const user = useQuery(userQuery)
+
   const [createBook] = useMutation(addBook, {
     refetchQueries: [{ query: GetBooks }, { query: GetAuthors }],
   })
@@ -26,7 +31,7 @@ const App = () => {
     refetchQueries: [{ query: GetAuthors }],
   })
 
-  if (result.loading) {
+  if (authors.loading || books.loading || user.loading) {
     return <div>loading...</div>
   }
 
@@ -60,18 +65,25 @@ const App = () => {
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
         <button onClick={() => setPage("add")}>add book</button>
+        <button onClick={() => setPage("recommended")}>recommend</button>
         <button onClick={logout}>logout</button>
       </div>
 
       <Authors
         show={page === "authors"}
-        authors={result.data.allAuthors}
+        authors={authors.data.allAuthors}
         editAuthor={editAuthor}
       />
 
-      <Books show={page === "books"} books={result.data.allBooks} />
+      <Books show={page === "books"} books={books.data.allBooks} />
 
       <NewBook show={page === "add"} createBook={createBook} />
+
+      <Recommended
+        show={page === "recommended"}
+        books={books.data.allBooks}
+        favoriteGenre={user.data.me.favoriteGenre}
+      />
     </div>
   )
 }

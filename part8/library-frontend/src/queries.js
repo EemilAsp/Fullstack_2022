@@ -70,3 +70,12 @@ export const EditAuthor = gql`
     }
   }
 `
+
+export const userQuery = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+    }
+  }
+`
