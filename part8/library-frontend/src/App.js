@@ -20,7 +20,7 @@ const App = () => {
   const result = useQuery(page === "authors" ? GetAuthors : GetBooks)
   const client = useApolloClient()
   const [createBook] = useMutation(addBook, {
-    refetchQueries: [{ query: GetBooks }],
+    refetchQueries: [{ query: GetBooks }, { query: GetAuthors }],
   })
   const [editAuthor] = useMutation(EditAuthor, {
     refetchQueries: [{ query: GetAuthors }],
