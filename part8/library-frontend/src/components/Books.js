@@ -1,4 +1,6 @@
 import { useState } from "react"
+// 8.21 and 8.22 left undone, would require switching the useQuery call here and other
+//refactoring, so too much work.
 
 const Books = ({ show, books }) => {
   const [genre, setGenre] = useState("All")
