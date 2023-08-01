@@ -1,11 +1,24 @@
 import { useState } from "react"
+import { useMutation } from "@apollo/client"
 
-const NewBook = ({ show, createBook }) => {
+import { GetBooks, addBook } from "../queries"
+import { updateCache } from "../App"
+
+const NewBook = ({ show, setError }) => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [published, setPublished] = useState("")
   const [genre, setGenre] = useState("")
   const [genres, setGenres] = useState([])
+
+  const [createBook] = useMutation(addBook, {
+    onError: (error) => {
+      setError("Error while adding a new book")
+    },
+    update: (cache, response) => {
+      updateCache(cache, { query: GetBooks }, response.data.addedBook)
+    },
+  })
 
   if (!show) {
     return null

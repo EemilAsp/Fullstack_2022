@@ -4,14 +4,41 @@ import Books from "./components/Books"
 import NewBook from "./components/NewBook"
 import LoginForm from "./components/LoginForm"
 import Recommended from "./components/Recommended"
-import { useQuery, useMutation, useApolloClient } from "@apollo/client"
-import { EditAuthor, GetBooks, GetAuthors, addBook, userQuery } from "./queries"
+import {
+  useQuery,
+  useMutation,
+  useApolloClient,
+  useSubscription,
+} from "@apollo/client"
+import {
+  EditAuthor,
+  GetBooks,
+  GetAuthors,
+  userQuery,
+  Book_Added,
+} from "./queries"
 
 const Notify = ({ errorMessage }) => {
   if (!errorMessage) {
     return null
   }
   return <div style={{ color: "red" }}>{errorMessage}</div>
+}
+
+export const updateCache = (cache, query, addedBook) => {
+  const uniqByName = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.name
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),
+    }
+  })
 }
 
 const App = () => {
@@ -24,9 +51,15 @@ const App = () => {
   const books = useQuery(GetBooks)
   const user = useQuery(userQuery)
 
-  const [createBook] = useMutation(addBook, {
-    refetchQueries: [{ query: GetBooks }, { query: GetAuthors }],
+  useSubscription(Book_Added, {
+    onData: ({ data }) => {
+      const addedBook = data.data.bookAdded
+      console.log(addedBook)
+      notify(`${addedBook.title} added`)
+      updateCache(client.cache, { query: GetBooks }, addedBook)
+    },
   })
+
   const [editAuthor] = useMutation(EditAuthor, {
     refetchQueries: [{ query: GetAuthors }],
   })
@@ -77,7 +110,7 @@ const App = () => {
 
       <Books show={page === "books"} books={books.data.allBooks} />
 
-      <NewBook show={page === "add"} createBook={createBook} />
+      <NewBook show={page === "add"} setError={notify} />
 
       <Recommended
         show={page === "recommended"}
