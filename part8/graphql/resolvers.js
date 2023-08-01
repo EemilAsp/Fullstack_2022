@@ -133,8 +133,7 @@ const resolvers = {
       })
 
       try {
-        const book = await newBook.save()
-        return book
+        await newBook.save()
       } catch (error) {
         throw new GraphQLError("Saving new book failed", {
           extensions: {
@@ -144,6 +143,8 @@ const resolvers = {
           },
         })
       }
+      pubsub.publish("BOOK_ADDED", { bookAdded: newBook })
+      return newBook
     },
     editAuthor: async (root, args, context) => {
       // edit author works
@@ -174,6 +175,11 @@ const resolvers = {
           },
         })
       }
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator("BOOK_ADDED"),
     },
   },
 }
