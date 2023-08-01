@@ -16,7 +16,8 @@ const NewBook = ({ show, setError }) => {
       setError("Error while adding a new book")
     },
     update: (cache, response) => {
-      updateCache(cache, { query: GetBooks }, response.data.addedBook)
+      const addedBook = response.data.addedBook
+      updateCache(cache, { query: GetBooks }, addedBook)
     },
   })
 

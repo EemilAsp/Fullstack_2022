@@ -48,7 +48,7 @@ const resolvers = {
     allAuthors: async () => {
       const authors = await Author.find({})
       const allauthors = await authors.map((author) => {
-        bookCount = Book.collection.countDocuments({ author: author._id })
+        const bookCount = Book.collection.countDocuments({ author: author._id })
         return {
           name: author.name,
           bookCount: bookCount,
@@ -165,7 +165,12 @@ const resolvers = {
         }
         author.born = args.setBornTo
         await author.save()
-        return author
+        return {
+          name: author.name,
+          bookCount: author.bookCount,
+          born: author.born,
+          id: author.id,
+        }
       } catch (error) {
         throw new GraphQLError("Editing author failed", {
           extensions: {
