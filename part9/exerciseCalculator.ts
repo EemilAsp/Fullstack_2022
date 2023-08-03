@@ -1,4 +1,4 @@
-import { isNotNumber } from "./utils"
+//import { isNotNumber } from "./utils"
 
 interface Result {
   periodLength: number
@@ -46,11 +46,12 @@ const calculateExercise = (hoursDaily: number[], target: number): Result => {
   return result
 }
 
+export default calculateExercise
 /** 
 const dailyHours = [3, 0, 2, 4.5, 0, 3, 1]
 const targetHours = 2
 console.log(calculateExercise(dailyHours, targetHours))
-*/
+
 
 const args = process.argv.slice(2)
 const target = Number(args[0])
@@ -61,3 +62,4 @@ if (isNotNumber(target) || hoursDaily.some((hour) => isNotNumber(hour))) {
 } else {
   console.log(calculateExercise(hoursDaily, target))
 }
+*/
