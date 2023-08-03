@@ -56,7 +56,7 @@ const args = process.argv.slice(2)
 const target = Number(args[0])
 const hoursDaily = args.slice(1).map((a) => Number(a))
 
-if (isNaN(target) || hoursDaily.some((hour) => isNaN(hour))) {
+if (isNotNumber(target) || hoursDaily.some((hour) => isNotNumber(hour))) {
   console.log("Target and daily hours must be numeric values")
 } else {
   console.log(calculateExercise(hoursDaily, target))
