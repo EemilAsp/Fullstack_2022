@@ -1,3 +1,5 @@
+import { isNotNumber } from "./utils"
+
 interface Result {
   periodLength: number
   trainingDays: number
@@ -44,6 +46,18 @@ const calculateExercise = (hoursDaily: number[], target: number): Result => {
   return result
 }
 
+/** 
 const dailyHours = [3, 0, 2, 4.5, 0, 3, 1]
 const targetHours = 2
 console.log(calculateExercise(dailyHours, targetHours))
+*/
+
+const args = process.argv.slice(2)
+const target = Number(args[0])
+const hoursDaily = args.slice(1).map((a) => Number(a))
+
+if (isNaN(target) || hoursDaily.some((hour) => isNaN(hour))) {
+  console.log("Target and daily hours must be numeric values")
+} else {
+  console.log(calculateExercise(hoursDaily, target))
+}
