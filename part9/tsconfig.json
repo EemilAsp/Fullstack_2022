@@ -5,7 +5,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
