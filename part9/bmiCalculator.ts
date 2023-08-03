@@ -12,4 +12,11 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 }
 
-console.log(calculateBmi(180, 74))
+const height = Number(process.argv[2])
+const weight = Number(process.argv[3])
+
+if (isNaN(height) || isNaN(weight)) {
+  console.log("Height and weight should be numeric values")
+} else {
+  console.log(calculateBmi(height, weight))
+}
