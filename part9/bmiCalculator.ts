@@ -12,6 +12,7 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 }
 
+/*  
 const height = Number(process.argv[2])
 const weight = Number(process.argv[3])
 
@@ -20,3 +21,6 @@ if (isNaN(height) || isNaN(weight)) {
 } else {
   console.log(calculateBmi(height, weight))
 }
+*/
+
+export default calculateBmi
