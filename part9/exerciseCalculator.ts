@@ -17,11 +17,11 @@ const calculateExercise = (hoursDaily: number[], target: number): Result => {
   let rating
   let ratingDescription
 
-  if (average > target + 2) {
+  if (average >= target + 1) {
     success = true
     rating = 3
     ratingDescription = "Perfect"
-  } else if (average >= target + 1 || average >= target - 1) {
+  } else if (average >= target + 0.5 || average >= target - 0.5) {
     success = true
     rating = 2
     ratingDescription = "not too bad but could be better"
