@@ -1,0 +1,3 @@
+[submodule "part9/patientor"]
+	path = part9/patientor
+	url = https://github.com/EemilAsp/patientor.git
