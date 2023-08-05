@@ -19,20 +19,10 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
   }))
 }
 
-const addPatient = (
-  name: string,
-  dateOfBirth: string,
-  ssn: string,
-  gender: string,
-  occupation: string
-): NewPatientEntry => {
+const addPatient = (patient: NewPatientEntry): Patient => {
   const newPatientEntry = {
     id: uuid(),
-    name,
-    dateOfBirth,
-    ssn,
-    gender,
-    occupation,
+    ...patient,
   }
 
   patients.push(newPatientEntry)
