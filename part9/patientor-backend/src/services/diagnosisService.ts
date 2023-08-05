@@ -1,4 +1,4 @@
-import diagnoseData from "../../data/diagnoses.ts"
+import diagnoseData from "../data/diagnoses.json"
 
 interface Diagnose {
   code: string
@@ -6,8 +6,11 @@ interface Diagnose {
   latin?: string
 }
 
+const diagnoses: Diagnose[] = diagnoseData as Diagnose[]
+
 const getEntries = (): Diagnose[] => {
-  return diagnoseData
+  console.log(diagnoses)
+  return diagnoses
 }
 
 const addDiagnose = () => {
