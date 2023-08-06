@@ -29,6 +29,8 @@ const App = () => {
 
   return (
     <div>
+      <h1>Add new entry</h1>
+      <DiaryForm onSubmit={submitNewDiary} />
       <h1>Diaries</h1>
       {diaries.map((diary) => (
         <div key={diary.id}>
@@ -39,7 +41,6 @@ const App = () => {
           <p>{diary.visibility}</p>
         </div>
       ))}
-      <DiaryForm onSubmit={submitNewDiary} />
     </div>
   )
 }
