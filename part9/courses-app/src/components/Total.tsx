@@ -16,7 +16,9 @@ const Total = (props: Totals): JSX.Element => {
   )
   return (
     <div>
-      <p>Total number of excercises {totalExercises}</p>
+      <p>
+        <b>Total number of excercises {totalExercises}</b>
+      </p>
     </div>
   )
 }

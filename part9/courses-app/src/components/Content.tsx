@@ -1,21 +1,16 @@
 import React from "react"
+import Part from "./Part"
+import { CoursePart } from "../types"
 
-interface Part {
-  name: string
-  exerciseCount: number
+interface Content {
+  courseParts: CoursePart[]
 }
 
-interface Contents {
-  parts: Part[]
-}
-
-const Content = (props: Contents): JSX.Element => {
+const Content = ({ courseParts }: Content): JSX.Element => {
   return (
     <div>
-      {props.parts.map((part, index) => (
-        <p key={index}>
-          {part.name} {part.exerciseCount}
-        </p>
+      {courseParts.map((coursePart) => (
+        <Part key={coursePart.name} part={coursePart} />
       ))}
     </div>
   )
