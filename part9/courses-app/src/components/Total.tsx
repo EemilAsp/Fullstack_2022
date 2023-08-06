@@ -1,5 +1,3 @@
-import React from "react"
-
 interface Part {
   name: string
   exerciseCount: number
