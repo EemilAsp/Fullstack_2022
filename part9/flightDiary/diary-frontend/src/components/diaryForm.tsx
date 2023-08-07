@@ -1,41 +1,11 @@
 import React, { SyntheticEvent, useState } from "react"
 import { NewDiaryEntry, Visibility, Weather } from "../types"
 
-import {
-  TextField,
-  InputLabel,
-  MenuItem,
-  Select,
-  Grid,
-  Button,
-  SelectChangeEvent,
-} from "@mui/material"
+import { TextField, Grid, Button } from "@mui/material"
 
 interface Props {
   onSubmit: (values: NewDiaryEntry) => void
 }
-
-interface WeatherOption {
-  value: Weather
-  label: string
-}
-
-interface visibilityOption {
-  value: Visibility
-  label: string
-}
-
-const visibilityOptions: visibilityOption[] = Object.values(Visibility).map(
-  (v) => ({
-    value: v,
-    label: v.toString(),
-  })
-)
-
-const weatherOptions: WeatherOption[] = Object.values(Weather).map((w) => ({
-  value: w,
-  label: w.toString(),
-}))
 
 const DiaryForm = ({ onSubmit }: Props) => {
   const [date, setDate] = useState("")
@@ -53,72 +23,57 @@ const DiaryForm = ({ onSubmit }: Props) => {
     })
   }
 
-  const onWeatherChange = (event: SelectChangeEvent<string>) => {
-    event.preventDefault()
-    if (typeof event.target.value === "string") {
-      const value = event.target.value
-      const weather = Object.values(Weather).find((w) => w.toString() === value)
-      if (weather) {
-        setWeather(weather)
-      }
-    }
-  }
-
-  const onVisibilityChange = (event: SelectChangeEvent<string>) => {
-    event.preventDefault()
-    if (typeof event.target.value === "string") {
-      const value = event.target.value
-      const visibility = Object.values(Visibility).find(
-        (v) => v.toString() === value
-      )
-      if (visibility) {
-        setVisibility(visibility)
-      }
-    }
-  }
   //the dropdowns in visibility and weather basically ensure that only valid data is returned.
   //Error handling for the date is required.
   return (
     <div>
       <form onSubmit={addDiaryEntry}>
-        <TextField
-          label="Date"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={date}
-          onChange={({ target }) => setDate(target.value)}
-        />
-        <InputLabel style={{ marginTop: 20 }}>Weather</InputLabel>
-        <Select
-          label="Weather"
-          fullWidth
-          value={weather}
-          onChange={onWeatherChange}
-        >
-          {weatherOptions.map((option) => (
-            <MenuItem key={option.label} value={option.value}>
-              {option.label}
-            </MenuItem>
+        <label>
+          Date
+          <input
+            type="date"
+            value={date}
+            onChange={({ target }) => setDate(target.value)}
+          />
+        </label>
+
+        <div>
+          Weather:
+          {Object.values(Weather).map((w) => (
+            <label key={w}>
+              <input
+                type="radio"
+                name="weather"
+                value={w}
+                checked={weather === w}
+                onChange={() => setWeather(w)}
+              />
+              {w}
+            </label>
           ))}
-        </Select>
-        <InputLabel style={{ marginTop: 20 }}>Visibility</InputLabel>
-        <Select
-          label="Visibility"
-          fullWidth
-          value={visibility}
-          onChange={onVisibilityChange}
-        >
-          {visibilityOptions.map((option) => (
-            <MenuItem key={option.label} value={option.value}>
-              {option.label}
-            </MenuItem>
+        </div>
+
+        <div>
+          Visibility:
+          {Object.values(Visibility).map((v) => (
+            <label key={v}>
+              <input
+                type="radio"
+                name="visibility"
+                value={v}
+                checked={visibility === v}
+                onChange={() => setVisibility(v)}
+              />
+              {v}
+            </label>
           ))}
-        </Select>
+        </div>
 
         <TextField
           label="Comment"
-          fullWidth
           value={comment}
+          variant="outlined"
+          size="small"
           onChange={({ target }) => setComment(target.value)}
         />
         <Grid item>
