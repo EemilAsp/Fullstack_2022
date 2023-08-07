@@ -76,7 +76,8 @@ const DiaryForm = ({ onSubmit }: Props) => {
       }
     }
   }
-
+  //the dropdowns in visibility and weather basically ensure that only valid data is returned.
+  //Error handling for the date is required.
   return (
     <div>
       <form onSubmit={addDiaryEntry}>
