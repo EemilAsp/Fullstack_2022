@@ -19,6 +19,7 @@ const toNewPatientEntry = (object: unknown): NewPatientEntry => {
       ssn: validator.parseSSN(object.ssn),
       gender: validator.parseGender(object.gender),
       occupation: validator.parseOccupation(object.occupation),
+      entries: [],
     }
     return newEntry
   }

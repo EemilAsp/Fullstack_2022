@@ -10,13 +10,20 @@ const getEntries = (): Patient[] => {
 
 // backend runs only in dev mode, npm run tsc build cannot acess the data folder ?
 const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
-  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-    id,
-    name,
-    dateOfBirth,
-    gender,
-    occupation,
-  }))
+  return patients.map(
+    ({ id, name, dateOfBirth, gender, occupation, entries }) => ({
+      id,
+      name,
+      dateOfBirth,
+      gender,
+      occupation,
+      entries,
+    })
+  )
+}
+
+const getPatientById = (id: string): Patient | undefined => {
+  return patients.find((patient) => patient.id === id)
 }
 
 const addPatient = (patient: NewPatientEntry): Patient => {
@@ -33,4 +40,5 @@ export default {
   getEntries,
   addPatient,
   getNonSensitiveEntries,
+  getPatientById,
 }
