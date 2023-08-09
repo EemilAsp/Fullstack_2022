@@ -33,7 +33,7 @@
         "date": "2018-01-02",
         "type": "OccupationalHealthcare",
         "specialist": "MD Donald",
-        "diagnosisCodes": ["F43.2"],
+        "diagnosisCodes": ["S50.5"],
         "description": "Imsomnia caused by stress in work",
         "sickLeave": {
           "startDate": "2018-01-02",

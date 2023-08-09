@@ -1,5 +1,3 @@
-export interface Entry {}
-
 export enum Gender {
   Male = "male",
   Female = "female",
@@ -25,7 +23,7 @@ export interface BaseHealthCareEntry {
   id: string
   date: string
   specialist: string
-  diagnoseCodes: string[]
+  diagnosisCodes: string[]
   description: string
 }
 
@@ -48,3 +46,5 @@ export interface OccupationalHealthcareEntry extends BaseHealthCareEntry {
 export type NonSensitivePatientEntry = Omit<Patient, "ssn" | "entries">
 
 export type NewPatientEntry = Omit<Patient, "id">
+
+export type Entry = OccupationalHealthcareEntry | HospitalEntry
