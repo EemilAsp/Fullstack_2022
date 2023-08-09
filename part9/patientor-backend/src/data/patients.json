@@ -5,7 +5,20 @@
     "dateOfBirth": "1986-07-09",
     "ssn": "090786-122X",
     "gender": "male",
-    "entries": [],
+    "entries": [
+      {
+        "id": "d811e46d-70b3-4d90-b090-4535c7cf8fb1",
+        "date": "2015-01-02",
+        "type": "Hospital",
+        "specialist": "MD House",
+        "diagnosisCodes": ["S62.5"],
+        "description": "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+        "discharge": {
+          "date": "2015-01-16",
+          "criteria": "Thumb has healed."
+        }
+      }
+    ],
     "occupation": "New york city cop"
   },
   {
@@ -14,7 +27,20 @@
     "dateOfBirth": "1979-01-30",
     "ssn": "300179-77A",
     "gender": "male",
-    "entries": [],
+    "entries": [
+      {
+        "id": "d861235-70b3-4d90-b090-4535c7cf8fb1",
+        "date": "2018-01-02",
+        "type": "OccupationalHealthcare",
+        "specialist": "MD Donald",
+        "diagnosisCodes": ["F43.2"],
+        "description": "Imsomnia caused by stress in work",
+        "sickLeave": {
+          "startDate": "2018-01-02",
+          "endDate": "2018-02-10"
+        }
+      }
+    ],
     "occupation": "Cop"
   },
   {
@@ -23,7 +49,20 @@
     "dateOfBirth": "1970-04-25",
     "ssn": "250470-555L",
     "gender": "other",
-    "entries": [],
+    "entries": [
+      {
+        "id": "d911e46d-70b3-4d90-b090-4535c7cf8fb1",
+        "date": "2022-03-15",
+        "type": "Hospital",
+        "specialist": "Dr. Smith",
+        "diagnosisCodes": ["T56.1"],
+        "description": "Fractured arm due to fall.",
+        "discharge": {
+          "date": "2022-03-22",
+          "criteria": "Arm has healed."
+        }
+      }
+    ],
     "occupation": "Technician"
   },
   {
@@ -32,7 +71,20 @@
     "dateOfBirth": "1974-01-05",
     "ssn": "050174-432N",
     "gender": "female",
-    "entries": [],
+    "entries": [
+      {
+        "id": "d922e46d-70b3-4d90-b090-4535c7cf8fb1",
+        "date": "2023-05-10",
+        "type": "OccupationalHealthcare",
+        "specialist": "Dr. Johnson",
+        "diagnosisCodes": ["Z20.8"],
+        "description": "Routine checkup.",
+        "sickLeave": {
+          "startDate": "2023-05-10",
+          "endDate": "2023-05-11"
+        }
+      }
+    ],
     "occupation": "Forensic Pathologist"
   },
   {
@@ -41,7 +93,20 @@
     "dateOfBirth": "1971-04-09",
     "ssn": "090471-8890",
     "gender": "male",
-    "entries": [],
+    "entries": [
+      {
+        "id": "d933e46d-70b3-4d90-b090-4535c7cf8fb1",
+        "date": "2020-11-20",
+        "type": "Hospital",
+        "specialist": "Dr. Brown",
+        "diagnosisCodes": ["A09.9"],
+        "description": "Stomach pain and discomfort.",
+        "discharge": {
+          "date": "2020-11-25",
+          "criteria": "Recovered from stomach infection."
+        }
+      }
+    ],
     "occupation": "Digital evangelist"
   }
 ]
