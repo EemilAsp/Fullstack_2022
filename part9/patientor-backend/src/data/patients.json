@@ -33,7 +33,7 @@
         "date": "2018-01-02",
         "type": "OccupationalHealthcare",
         "specialist": "MD Donald",
-        "diagnosisCodes": ["S50.5"],
+        "diagnosisCodes": ["Z74.3"],
         "description": "Imsomnia caused by stress in work",
         "sickLeave": {
           "startDate": "2018-01-02",
@@ -55,7 +55,7 @@
         "date": "2022-03-15",
         "type": "Hospital",
         "specialist": "Dr. Smith",
-        "diagnosisCodes": ["T56.1"],
+        "diagnosisCodes": ["S62.5"],
         "description": "Fractured arm due to fall.",
         "discharge": {
           "date": "2022-03-22",
